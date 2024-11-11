@@ -1,0 +1,28 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+    branches:
+      - "main"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the code from the repository
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      # Build the Docker image
+      - name: Build the Docker image
+        run: |
+          docker build -f Overview/Dockerfile --force-rm -t kevinsiraki/overview:latest .
+
+      # Push the Docker image to the registry
+      - name: Push Docker image to registry
+        run: |
+          docker push kevinsiraki/overview:latest
