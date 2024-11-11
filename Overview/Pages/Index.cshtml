@@ -39,10 +39,22 @@
             <div class="bg-light p-3 rounded row justify-content-left" style="border: 1px solid #ddd; text-align: left !important;">
                 <pre>
 <code>
+REM Navigate to the project directory
 cd C:\Users\kevsi\source\repos\Overview
-docker build -f Overview\Dockerfile --force-rm -t kevinsiraki/overview:latest .
-docker push kevinsiraki/overview:latest
+
+REM Build the Docker image and push it to the registry
+docker build -f Overview\Dockerfile --force-rm -t kevinsiraki/overview:dev .
+docker push kevinsiraki/overview:dev
+
+REM Perform a Git commit and push the changes to the 'dev' branch
+git checkout dev
+git add .
+git commit -m "Automated commit for Docker image update"
+git push -u origin dev
+
+REM Pause to see output
 pause
+
 </code>
                 </pre>
             </div>
