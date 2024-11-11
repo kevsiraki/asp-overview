@@ -38,23 +38,23 @@
             <h4>Sample script for building and pushing Docker container on Windows 11 to Docker Hub</h4>
             <div class="bg-light p-3 rounded row justify-content-left" style="border: 1px solid #ddd; text-align: left !important;">
                 <pre>
-                    <code>
-                    REM Navigate to the project directory
-                    cd C:\Users\kevsi\source\repos\Overview
-                    
-                    REM Build the Docker image and push it to the registry
-                    docker build -f Overview\Dockerfile --force-rm -t kevinsiraki/overview:dev .
-                    docker push kevinsiraki/overview:dev
-                    
-                    REM Perform a Git commit and push the changes to the 'dev' branch
-                    git checkout dev
-                    git add .
-                    git commit -m "Automated commit for Docker image update"
-                    git push -u origin dev
-                    
-                    REM Pause to see output
-                    pause
-                    </code>
+<code>
+REM Navigate to the project directory
+cd C:\Users\kevsi\source\repos\Overview
+
+REM Build the Docker image and push it to the registry
+docker build -f Overview\Dockerfile --force-rm -t kevinsiraki/overview:dev .
+docker push kevinsiraki/overview:dev
+
+REM Perform a Git commit and push the changes to the 'dev' branch
+git checkout dev
+git add .
+git commit -m "Automated commit for Docker image update"
+git push -u origin dev
+
+REM Pause to see output
+pause
+</code>
                 </pre>
             </div>
         </div>
@@ -68,32 +68,32 @@
             <h4>Script for deploying app on Ubuntu 22.04</h4>
             <div class="bg-light p-3 rounded" style="border: 1px solid #ddd; text-align: left !important;">
                 <pre>
-                    <code>
-                    #!/bin/bash
-                    
-                    # Stop and remove all running Docker containers
-                    #echo "Stopping and removing all running Docker containers..."
-                    #sudo docker kill $(sudo docker ps -q)
-                    #sudo docker rm $(sudo docker ps -aq)
-                    
-                    # Delete all Docker images
-                    #echo "Deleting all Docker images..."
-                    #sudo docker rmi $(sudo docker images -q)
-                    
-                    # Cleanup unused Docker resources (dangling images, stopped containers, networks, and build cache)
-                    echo "Cleaning up Docker resources..."
-                    #sudo docker system prune -af
-                    
-                    sudo docker rm -f overview-container-dev
-                    
-                    # Pull the latest version of the kevin siraki overview image
-                    echo "Pulling the latest kevin siraki overview image..."
-                    sudo docker pull kevinsiraki/overview:dev
-                    
-                    # Run the Docker container
-                    echo "Running the container..."
-                    sudo docker run -d -p 8083:8080 -p 8084:8081 --name overview-container-dev kevinsiraki/overview:dev
-                    </code>
+<code>
+#!/bin/bash
+
+# Stop and remove all running Docker containers
+#echo "Stopping and removing all running Docker containers..."
+#sudo docker kill $(sudo docker ps -q)
+#sudo docker rm $(sudo docker ps -aq)
+
+# Delete all Docker images
+#echo "Deleting all Docker images..."
+#sudo docker rmi $(sudo docker images -q)
+
+# Cleanup unused Docker resources (dangling images, stopped containers, networks, and build cache)
+echo "Cleaning up Docker resources..."
+#sudo docker system prune -af
+
+sudo docker rm -f overview-container-dev
+
+# Pull the latest version of the kevin siraki overview image
+echo "Pulling the latest kevin siraki overview image..."
+sudo docker pull kevinsiraki/overview:dev
+
+# Run the Docker container
+echo "Running the container..."
+sudo docker run -d -p 8083:8080 -p 8084:8081 --name overview-container-dev kevinsiraki/overview:dev
+</code>
                 </pre>
             </div>
         </div>
