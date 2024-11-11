@@ -1,0 +1,93 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container text-center">
+    <h1 class="display-4">Welcome, Users (Dev Git Test)!</h1>
+    <p>Welcome to a .NET 8 web app built using ASP.NET Core with Razor Pages, Dockerized for smooth development and deployment workflows.</p>
+
+    <!-- Technologies Section -->
+    <h3 class="mt-4">Technologies Used</h3>
+    <div class="row justify-content-center">
+        <!-- .NET 8 Image -->
+        <div class="col-4">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/.NET_Core_Logo.svg/2048px-.NET_Core_Logo.svg.png" alt=".NET 8 Logo" class="img-fluid" style="max-width: 75px;" />
+            <p><strong>.NET 8</strong> - The latest iteration of the .NET platform, providing performance improvements and enhanced features for building modern applications.</p>
+        </div>
+
+    <!-- Docker Logo -->
+    <h3 class="mt-4">Containerization with Docker</h3>
+    <div class="row justify-content-center">
+        <div class="col-4">
+            <img src="https://cdn.worldvectorlogo.com/logos/docker.svg" alt="Docker Logo" class="img-fluid" style="max-width: 100px;" />
+            <p><strong>Docker</strong> - Docker containers are used to package the app for consistency across development and production environments, ensuring reliability and scalability.</p>
+        </div>
+    </div>
+
+    <!-- Environments Section -->
+    <h3 class="mt-4">Environments</h3>
+    <div class="row justify-content-center">
+        <!-- Windows 11 Dev Image -->
+        <div class="col-md-4">
+            <img src="https://img.icons8.com/color/200/windows-11.png" alt="Windows 11 Logo" class="img-fluid" style="max-width: 75px;" />
+            <p><strong>Windows 11 Dev Machine</strong> - Development environment utilizing Windows 11 for building and testing the application locally using Visual Studio and Docker.</p>
+
+            <!-- Code Snippet Area for Windows 11 -->
+            <h4>Sample script for building and pushing Docker container on Windows 11 to Docker Hub</h4>
+            <div class="bg-light p-3 rounded row justify-content-left" style="border: 1px solid #ddd; text-align: left !important;">
+                <pre>
+<code>
+cd C:\Users\kevsi\source\repos\Overview
+docker build -f Overview\Dockerfile --force-rm -t kevinsiraki/overview:latest .
+docker push kevinsiraki/overview:latest
+pause
+</code>
+                </pre>
+            </div>
+        </div>
+
+        <!-- Ubuntu 22.04 Prod Image -->
+        <div class="col-md-4">
+            <img src="https://1000logos.net/wp-content/uploads/2023/04/Ubuntu-logo.png" alt="Ubuntu 22.04 Logo" class="img-fluid" style="max-width: 150px;" />
+            <p><strong>Ubuntu 22.04 Prod Machine</strong> - The app runs in a production environment using Ubuntu 22.04 for stability, performance, and security in containerized Docker environments.</p>
+
+            <!-- Code Snippet Area for Ubuntu -->
+            <h4>Script for deploying app on Ubuntu 22.04</h4>
+            <div class="bg-light p-3 rounded" style="border: 1px solid #ddd; text-align: left !important;">
+                <pre>
+<code>
+#!/bin/bash
+
+# Stop and remove all running Docker containers
+echo "Stopping and removing all running Docker containers..."
+sudo docker kill $(sudo docker ps -q)
+sudo docker rm $(sudo docker ps -aq)
+
+# Delete all Docker images
+echo "Deleting all Docker images..."
+sudo docker rmi $(sudo docker images -q)
+
+# Cleanup unused Docker resources (dangling images, stopped containers, networks, and build cache)
+echo "Cleaning up Docker resources..."
+sudo docker system prune -af
+
+# Pull the latest version of the kevin siraki overview image
+echo "Pulling the latest kevin siraki overview image..."
+sudo docker pull kevinsiraki/overview:latest
+
+# Run the Docker container
+echo "Running the container..."
+sudo docker run -d -p 8081:8080 -p 8082:8081 --name overview-container kevinsiraki/overview:latest
+
+</code>
+                </pre>
+            </div>
+        </div>
+    </div>
+
+    <h3 class="mt-4">Dockerization</h3>
+    <p>The app is containerized using Docker, allowing it to be easily deployed and run consistently across different environments (Windows, Linux).</p>
+</div>
+

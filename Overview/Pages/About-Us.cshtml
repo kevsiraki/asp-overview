@@ -1,0 +1,65 @@
+﻿@page
+@model Overview.Pages.About_UsModel
+@{
+    ViewData["Title"] = "About Me - Kevin Siraki";
+}
+<h1>@ViewData["Title"]</h1>
+
+<!-- Personal Information Section -->
+<section class="personal-info">
+    <h2>Hello, It’s Kevin!</h2>
+    <p><strong>Location:</strong> Glendale, CA</p>
+    <p><strong>Email:</strong> <a href="mailto:kevsiraki@gmail.com">kevsiraki@gmail.com</a></p>
+    <p><strong>Website:</strong> <a href="https://www.kevinsiraki.com" target="_blank">www.kevinsiraki.com</a></p>
+</section>
+
+<!-- Professional Experience Section -->
+<section class="experience">
+    <h3>Professional Experience</h3>
+    <ul>
+        <li><strong>Software Engineer - Application Developer II</strong> | LA County Board of Supervisors | June 2024 - Present</li>
+        <li><strong>IT Technical Support Analyst I</strong> | LA County Board of Supervisors | April 2024 - June 2024</li>
+        <li><strong>Multimedia Technology Lead</strong> | Glendale Unified School District | September 2022 - April 2024</li>
+        <li><strong>Full Stack Developer</strong> | Don’t Trip | May 2020 - February 2023</li>
+    </ul>
+</section>
+
+<!-- Skills Section -->
+<section class="skills">
+    <h3>Skills</h3>
+    <ul>
+        <li><strong>Languages:</strong> JavaScript, TypeScript, Python, PHP, Java, C#, C++, Assembly</li>
+        <li><strong>Tools:</strong> PowerApps, PowerAutomate, Azure, Git, Docker, AWS</li>
+        <li><strong>Frameworks:</strong> Blazor, React, Angular, Vue, Laravel, ASP.NET MVC</li>
+    </ul>
+</section>
+
+
+<!-- GitHub Stats -->
+<section class="github-stats">
+    <h3>My GitHub Stats</h3>
+    <div id="github-stats">
+        <!-- GitHub Stats will be injected here -->
+    </div>
+</section>
+
+<!-- JavaScript to Fetch External APIs -->
+<script>
+
+    // Fetching GitHub Stats (replace with your own GitHub username)
+    async function fetchGitHubStats() {
+        const response = await fetch('https://api.github.com/users/kevsiraki');
+        const data = await response.json();
+        const githubElement = document.getElementById('github-stats');
+        githubElement.innerHTML = `
+                <p><strong>Public Repos:</strong> ${data.public_repos}</p>
+                <p><strong>Followers:</strong> ${data.followers}</p>
+                <p><strong>Following:</strong> ${data.following}</p>
+            `;
+    }
+
+    // Call the functions when the page loads
+    window.onload = () => {
+        fetchGitHubStats();
+    };
+</script>
