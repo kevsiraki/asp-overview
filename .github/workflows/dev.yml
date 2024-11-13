@@ -43,6 +43,6 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
 
           # SSH into the server and run the dev deploy script with sudo
-          ssh -o StrictHostKeyChecking=no -p 47441 kevinsiraki@donttrip.org << 'EOF'
+          ssh -o StrictHostKeyChecking=no -p 47441 kevinsiraki@donttrip.org << EOF
             echo "$SSH_PASSWORD" | sudo -S /home/kevinsiraki/overview/deploy-dev.sh  # Run dev-specific deploy script
           EOF
