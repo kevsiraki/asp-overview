@@ -1,4 +1,4 @@
-name: ci
+name: CI
 
 on:
   push:
@@ -43,5 +43,5 @@ jobs:
 
           # SSH into the server and run the deploy script with sudo
           ssh -o StrictHostKeyChecking=no -p 47441 kevinsiraki@donttrip.org << EOF
-            echo "$SSH_PASSWORD" | sudo -S /home/kevinsiraki/overview/deploy.sh
+            echo "$SERVER_PASSWORD" | sudo -S /home/kevinsiraki/overview/deploy.sh
           EOF
