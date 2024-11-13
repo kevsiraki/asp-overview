@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - "dev"  # This triggers the workflow when changes are pushed to the 'dev' branch
-  pull_request:
-    branches:
-      - "dev"  # Optionally trigger on pull requests to the 'dev' branch
 
 jobs:
   build-and-deploy:
@@ -47,3 +44,12 @@ jobs:
             export SERVER_PASSWORD="${SERVER_PASSWORD}"
             echo "$SERVER_PASSWORD" | sudo -S /home/kevinsiraki/overview/deploy-dev.sh  # Run dev-specific deploy script
           EOF
+
+      - name: Send success message to Discord
+        env:
+          DISCORD_WEBHOOK_DEV: ${{ secrets.DISCORD_WEBHOOK_DEV }}  # Your webhook URL stored as a secret
+        run: |
+          # Send a message to Discord indicating the success of the deployment
+          curl -X POST $DISCORD_WEBHOOK_DEV \
+            -H "Content-Type: application/json" \
+            -d '{"content": "Deployment to the dev environment was successful! 🚀"}'
