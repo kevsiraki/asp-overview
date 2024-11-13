@@ -1,0 +1,134 @@
+﻿@page
+@model Overview.Pages.About_UsModel
+@{
+    ViewData["Title"] = "About Me - Kevin Siraki";
+}
+<h1>@ViewData["Title"]</h1>
+
+<!-- Personal Information Section -->
+<section class="personal-info">
+    <br />
+    <p><strong>Location:</strong> Glendale, CA</p>
+    <p><strong>Email:</strong> <a href="mailto:kevsiraki@gmail.com">kevsiraki@gmail.com</a></p>
+    <p><strong>Website:</strong> <a href="https://www.kevinsiraki.com" target="_blank">www.kevinsiraki.com</a></p>
+</section>
+
+<!-- Professional Experience Section -->
+
+<section class="experience">
+    <br />
+    <h2>Professional Experience</h2>
+    <br />
+    <ul>
+        <li>
+            <strong>Software Engineer - Application Developer II</strong>
+            <ul>
+                <li>LA County Board of Supervisors</li>
+                <li>June 2024 - Present</li>
+            </ul>
+        </li>
+        <li>
+            <strong>IT Technical Support Analyst I</strong>
+            <ul>
+                <li>LA County Board of Supervisors</li>
+                <li>April 2024 - June 2024</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Multimedia Technology Lead</strong>
+            <ul>
+                <li>Glendale Unified School District</li>
+                <li>September 2022 - April 2024</li>
+            </ul>
+        </li>
+        <li>
+            <strong>Full Stack Developer</strong>
+            <ul>
+                <li>Don’t Trip</li>
+                <li>May 2020 - February 2023</li>
+            </ul>
+        </li>
+    </ul>
+</section>
+
+
+
+<!-- Skills Section -->
+<section class="skills">
+    <br />
+    <h2>Skills</h2>
+    <br />
+    <ul>
+        <li><strong>Languages:</strong> JavaScript, TypeScript, Python, PHP, Java, C#, C++, Assembly</li>
+        <li><strong>Tools:</strong> PowerApps, PowerAutomate, Azure, Git, Docker, AWS</li>
+        <li><strong>Frameworks:</strong> Blazor, React, Angular, Vue, Laravel, ASP.NET MVC</li>
+    </ul>
+</section>
+
+
+<!-- GitHub Stats -->
+<section class="github-stats">
+    <br />
+    <h2>My GitHub Stats</h2>
+    <br />
+    <div id="github-stats">
+        <!-- GitHub Stats will be injected here -->
+    </div>
+</section>
+
+<!-- Latest Lores -->
+<section class="latest-lores">
+    <br />
+    <h2>Latest Lores</h2>
+    <br />
+    <div id="latest-lores">
+        <!-- latest-lores will be injected here -->
+    </div>
+</section>
+
+<!-- JavaScript to Fetch External APIs -->
+<script>
+    // Fetching GitHub Stats
+    async function fetchGitHubStats() {
+        const response = await fetch('https://api.github.com/users/kevsiraki');
+        const data = await response.json();
+        const githubElement = document.getElementById('github-stats');
+        githubElement.innerHTML = `
+                    <p><strong>Public Repos:</strong> ${data.public_repos}</p>
+                    <p><strong>Followers:</strong> ${data.followers}</p>
+                    <p><strong>Following:</strong> ${data.following}</p>
+                `;
+    }
+
+    // Fetch and display top 3 latest lores
+    async function fetchLores() {
+        try {
+            const response = await fetch('https://donttrip.org/lore/server/lores');
+            const data = await response.json();
+            const loresElement = document.getElementById('latest-lores');
+
+            // Extract last 3 lores
+            const latestLores = data.data.slice(-3);
+
+            // Create HTML content for each lore with numbering and <hr> separators
+            loresElement.innerHTML = latestLores.map((lore, index) => `
+                    <div class="lore-item">
+                        <h4>${lore.title}</h4>
+                        <br />
+                        <p><strong>Date:</strong> ${lore.date}</p>
+                        <p><strong>Description:</strong> ${lore.description}</p>
+                        <p><strong>Associates:</strong> ${lore.associates.join(', ')}</p>
+                    </div>
+                    <hr style="border-top: 1px solid #ccc; margin: 20px 0;">
+                `).join('');
+        } catch (error) {
+            console.error("Error fetching lores:", error);
+        }
+    }
+
+    window.onload = () => {
+        fetchGitHubStats();
+        fetchLores();
+    };
+</script>
+

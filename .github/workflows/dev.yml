@@ -1,0 +1,48 @@
+name: CI - Dev
+
+on:
+  push:
+    branches:
+      - "dev"  # This triggers the workflow when changes are pushed to the 'dev' branch
+  pull_request:
+    branches:
+      - "dev"  # Optionally trigger on pull requests to the 'dev' branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image to dev tag
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Overview/Dockerfile
+          push: true
+          tags: kevinsiraki/overview:dev  # This will push the image with a "dev" tag
+
+      - name: SSH and run dev deploy script on remote server
+        env:
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          # Set up SSH
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # SSH into the server and run the dev deploy script with sudo
+          ssh -o StrictHostKeyChecking=no -p 47441 kevinsiraki@donttrip.org << 'EOF'
+            echo "$SSH_PASSWORD" | sudo -S /home/kevinsiraki/overview/deploy-dev.sh  # Run dev-specific deploy script
+          EOF
