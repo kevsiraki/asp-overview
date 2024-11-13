@@ -45,3 +45,12 @@ jobs:
           ssh -o StrictHostKeyChecking=no -p 47441 kevinsiraki@donttrip.org << EOF
             echo "$SERVER_PASSWORD" | sudo -S /home/kevinsiraki/overview/deploy.sh
           EOF
+
+      - name: Send success message to Discord
+        env:
+          DISCORD_WEBHOOK_PROD: ${{ secrets.DISCORD_WEBHOOK_PROD }}  # Your webhook URL stored as a secret
+        run: |
+          # Send a message to Discord indicating the success of the deployment
+          curl -X POST $DISCORD_WEBHOOK_PROD \
+            -H "Content-Type: application/json" \
+            -d '{"content": "Deployment to the prod environment was successful! 🚀"}'
