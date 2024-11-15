@@ -33,56 +33,115 @@
         <div class="col-md-4">
             <img src="https://img.icons8.com/color/200/windows-11.png" alt="Windows 11 Logo" class="img-fluid" style="max-width: 75px;" />
             <p><strong>Windows 11 Dev Machine</strong> - Development environment utilizing Windows 11 for building and testing the application locally using Visual Studio and Docker.</p>
-
-            <!-- Code Snippet Area for Windows 11 -->
-            <h4>Sample script for building and pushing Docker container on Windows 11 to Docker Hub</h4>
-            <div class="bg-light p-3 rounded row justify-content-left" style="border: 1px solid #ddd; text-align: left !important;">
-                <pre>
-<code>
-REM Navigate to the project directory
-cd C:\Users\kevsi\source\repos\Overview
-
-REM Build the Docker image and push it to the registry
-docker build -f Overview\Dockerfile --force-rm -t kevinsiraki/overview:dev .
-docker push kevinsiraki/overview:dev
-
-REM Perform a Git commit and push the changes to the 'dev' branch
-git checkout dev
-git add .
-git commit -m "Automated commit for Docker image update"
-git push -u origin dev
-
-REM Pause to see output
-pause
-</code>
-                </pre>
-            </div>
         </div>
 
         <!-- Ubuntu 22.04 Prod Image -->
         <div class="col-md-4">
             <img src="https://1000logos.net/wp-content/uploads/2023/04/Ubuntu-logo.png" alt="Ubuntu 22.04 Logo" class="img-fluid" style="max-width: 150px;" />
             <p><strong>Ubuntu 22.04 Prod Machine</strong> - The app runs in a production environment using Ubuntu 22.04 for stability, performance, and security in containerized Docker environments.</p>
+        </div>
+    </div>
 
-            <!-- Code Snippet Area for Ubuntu -->
-            <h4>Script for deploying app on Ubuntu 22.04</h4>
-            <div class="bg-light p-3 rounded" style="border: 1px solid #ddd; text-align: left !important;">
-                <pre>
+    <h3 class="mt-4">Dockerization</h3>
+    <p>The app is containerized using Docker, allowing it to be easily deployed and run consistently across different environments (Windows, Linux).</p>
+        <!-- Code Snippet Area for Windows 11 -->
+        <h4>Script for building and pushing code to Git from Windows 11 Dev Machine</h4>
+        <div class="bg-light p-3 rounded row justify-content-left" style="border: 1px solid #ddd; text-align: left !important;">
+            <pre>
+<code>
+REM Navigate to the project directory
+cd C:\Users\kevsi\source\repos\Overview
+
+REM Ensure we are on the correct branch, check current status
+git status
+
+REM Switch to the dev branch (if not already on it)
+git checkout dev
+
+REM Add all changes to staging
+git add .
+
+REM Commit changes with a message
+git commit -m "Automated commit for Docker image update."
+
+REM Push changes to the remote dev branch
+git push -u origin dev
+
+REM Pause to see output
+pause
+
+</code>
+                </pre>
+        </div>
+    <!-- Code Snippet Area for Ubuntu -->
+        <h4>Script for pushing to Docker Hub and deploying on Ubuntu 22.04 with Discord Notifications from Git Actions</h4>
+        <div class="bg-light p-3 rounded" style="border: 1px solid #ddd; text-align: left !important;">
+            <pre>
+<code>
+name: CI - Development
+
+on:
+  push:
+    branches:
+      - "dev"  # This triggers the workflow when changes are pushed to the 'dev' branch
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push Docker image to dev tag
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Overview/Dockerfile
+          push: true
+          tags: kevinsiraki/overview:dev  # This will push the image with a "dev" tag
+
+      - name: SSH and run dev deploy script on remote server
+        env:
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          # Set up SSH
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # SSH into the server and run the dev deploy script with sudo
+          ssh -o StrictHostKeyChecking=no -p 47441 kevinsiraki@donttrip.org << EOF
+            export SERVER_PASSWORD="${SERVER_PASSWORD}"
+            echo "$SERVER_PASSWORD" | sudo -S /home/kevinsiraki/overview/deploy-dev.sh  # Run dev-specific deploy script
+          EOF
+
+      - name: Send success message to Discord
+        env:
+          DISCORD_WEBHOOK_DEV: ${{ secrets.DISCORD_WEBHOOK_DEV }}  # Your webhook URL stored as a secret
+        run: |
+          # Send a message to Discord indicating the success of the deployment
+          curl -X POST $DISCORD_WEBHOOK_DEV \
+            -H "Content-Type: application/json" \
+            -d '{"content": "Deployment to the dev environment was successful! 🚀"}'
+</code>
+                </pre>
+        </div>
+        <!-- Server Code Snippet -->
+        <h4>Bash script on Ubuntu 22.04 server that is triggered via Git Actions</h4>
+        <div class="bg-light p-3 rounded" style="border: 1px solid #ddd; text-align: left !important;">
+            <pre>
 <code>
 #!/bin/bash
-
-# Stop and remove all running Docker containers
-#echo "Stopping and removing all running Docker containers..."
-#sudo docker kill $(sudo docker ps -q)
-#sudo docker rm $(sudo docker ps -aq)
-
-# Delete all Docker images
-#echo "Deleting all Docker images..."
-#sudo docker rmi $(sudo docker images -q)
-
-# Cleanup unused Docker resources (dangling images, stopped containers, networks, and build cache)
-echo "Cleaning up Docker resources..."
-#sudo docker system prune -af
 
 sudo docker rm -f overview-container-dev
 
@@ -95,11 +154,6 @@ echo "Running the container..."
 sudo docker run -d -p 8083:8080 -p 8084:8081 --name overview-container-dev kevinsiraki/overview:dev
 </code>
                 </pre>
-            </div>
         </div>
-    </div>
-
-    <h3 class="mt-4">Dockerization</h3>
-    <p>The app is containerized using Docker, allowing it to be easily deployed and run consistently across different environments (Windows, Linux).</p>
 </div>
 
