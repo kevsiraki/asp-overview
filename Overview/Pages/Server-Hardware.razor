@@ -1,0 +1,94 @@
+﻿@page
+@model ServerHardwareModel
+@{
+    ViewData["Title"] = "Server Hardware";
+}
+
+<h3>Server Hardware Details</h3>
+
+<div>
+    <h4>CPU Information</h4>
+    <ul>
+        <li>Architecture: x86_64</li>
+        <li>CPU op-modes: 32-bit, 64-bit</li>
+        <li>Address sizes: 48 bits physical, 48 bits virtual</li>
+        <li>Byte Order: Little Endian</li>
+        <li>CPU(s): 4 (Threads: 1 per core, Cores: 4 per socket)</li>
+        <li>Model: AMD Phenom II X4 820 Processor</li>
+        <li>Base Frequency: 2.8 GHz</li>
+        <li>Socket: AMD Socket AM3</li>
+        <li>TDP: 95 W</li>
+        <li>Cache: L1: 128K (per core), L2: 512K (per core), L3: 4MB (shared)</li>
+    </ul>
+</div>
+
+<div>
+    <h4>Memory Information</h4>
+    <ul>
+        <li>Total Memory: 16 GiB</li>
+        <li>4x 4 GiB Corsair Vengeance CL9 DDR3 Memory</li>
+        <li>Speed: 1333 MHz</li>
+        <li>Voltage: 1.5V</li>
+    </ul>
+</div>
+
+<div>
+    <h4>Storage Information</h4>
+    <ul>
+        <li>Total Storage: 256 GiB</li>
+        <li>1x 256 GiB Inland SATA SSD</li>
+    </ul>
+</div>
+
+<div>
+    <h4>GPU Information</h4>
+    <ul>
+        <li>Name: RV620 (Radeon HD 4200)</li>
+        <li>Clock Speeds: GPU Clock: 594 MHz, Memory Clock: 396 MHz</li>
+        <li>Memory: 512 MB DDR2, Bandwidth: 6.336 GB/s</li>
+        <li>Shading Units: 40</li>
+        <li>Outputs: DVI, VGA, S-Video</li>
+    </ul>
+</div>
+
+<div>
+    <h4>Power Supply</h4>
+    <ul>
+        <li>Brand: FSP</li>
+        <li>Wattage: 330 W</li>
+    </ul>
+</div>
+
+<div>
+    <h4>Motherboard Information</h4>
+    <ul>
+        <li>Manufacturer: Gateway</li>
+        <li>Model: DX4320 AMD Desktop Motherboard</li>
+        <li>Chipset: AMD 880G</li>
+        <li>Socket: AM3</li>
+        <li>Memory Slots: Four, supports 1333 MHz DDR3</li>
+        <li>Integrated Graphics: ATI Radeon HD 4250</li>
+    </ul>
+</div>
+
+<div>
+    <h4>Case Information</h4>
+    <ul>
+        <li>Brand: Zalman</li>
+        <li>Model: T7 (ATX Mid Tower)</li>
+        <li>Material: Alloy Steel, Plastic</li>
+        <li>Motherboard Compatibility: Mini-ITX, mATX, ATX</li>
+        <li>Cooling: 3 x 120mm Fans</li>
+    </ul>
+</div>
+
+<div>
+    <h4>Cooling System</h4>
+    <ul>
+        <li>CPU Cooler: Thermaltake UX200 SE Air Cooler</li>
+    </ul>
+</div>
+
+@code {
+    // The model and backend logic for hardware display can be included here as needed.
+}

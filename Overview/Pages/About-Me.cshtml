@@ -89,4 +89,9 @@
         fetchLores();
     };
 </script>
-
+<ul>
+    @foreach (var name in Model.FilteredNames)
+    {
+        <li>@name</li>
+    }
+</ul>
