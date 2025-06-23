@@ -32,6 +32,7 @@
     <br />
     <div id="github-stats"></div>
 </section>
+
 @* 
 <!-- Latest Lores -->
 <section class="latest-lores">
@@ -44,9 +45,9 @@
     </div>
 </section>
 *@
-<!-- JavaScript to Fetch External APIs -->
+
 <script>
-    // Fetching GitHub Stats
+    // Fetch GitHub Stats
     async function fetchGitHubStats() {
         const response = await fetch('https://api.github.com/users/kevsiraki');
         const data = await response.json();
@@ -59,7 +60,6 @@
     }
 
     @*
-
     // Fetch and display top 3 latest lores
     async function fetchLores() {
         try {
@@ -85,7 +85,6 @@
             console.error("Error fetching lores:", error);
         }
     }
-
     *@
 
     window.onload = () => {
@@ -93,6 +92,7 @@
         //fetchLores();
     };
 </script>
+
 <ul>
     @foreach (var name in Model.FilteredNames)
     {
