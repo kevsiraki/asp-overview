@@ -5,10 +5,9 @@
 }
 <h1>@ViewData["Title"]</h1>
 
-<!-- Personal Information Section -->
+<!-- (Not So) PII Section -->
 <section class="personal-info">
-    <p><strong>Location:</strong> Glendale, CA</p>
-    <p><strong>Email:</strong> <a href="mailto:kevsiraki@gmail.com">kevsiraki@gmail.com</a></p>
+    <p><strong>Location:</strong> Los Angeles, CA</p>
     <p><strong>Portfolio:</strong> <a href="https://www.kevinsiraki.com" target="_blank">www.kevinsiraki.com</a></p>
 </section>
 
@@ -28,12 +27,11 @@
 <!-- GitHub Stats -->
 <section class="github-stats">
     <br />
-    <h2>My GitHub Stats</h2>
+    <h2><a href="https://github.com/kevsiraki" target="_blank">My GitHub</a> Stats</h2>
     <br />
-    <div id="github-stats">
-        <!-- GitHub Stats will be injected here -->
-    </div>
+    <div id="github-stats"></div>
 </section>
+
 @* 
 <!-- Latest Lores -->
 <section class="latest-lores">
@@ -46,9 +44,9 @@
     </div>
 </section>
 *@
-<!-- JavaScript to Fetch External APIs -->
+
 <script>
-    // Fetching GitHub Stats
+    // Fetch GitHub Stats
     async function fetchGitHubStats() {
         const response = await fetch('https://api.github.com/users/kevsiraki');
         const data = await response.json();
@@ -61,7 +59,6 @@
     }
 
     @*
-
     // Fetch and display top 3 latest lores
     async function fetchLores() {
         try {
@@ -87,7 +84,6 @@
             console.error("Error fetching lores:", error);
         }
     }
-
     *@
 
     window.onload = () => {
@@ -95,6 +91,7 @@
         //fetchLores();
     };
 </script>
+
 <ul>
     @foreach (var name in Model.FilteredNames)
     {
