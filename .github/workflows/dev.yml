@@ -3,7 +3,7 @@ name: CI - Development
 on:
   push:
     branches:
-      - "dev"  # This triggers the workflow when changes are pushed to the 'dev' branch
+      - "dev"
 
 jobs:
   build-and-deploy:
@@ -27,29 +27,38 @@ jobs:
           context: .
           file: Overview/Dockerfile
           push: true
-          tags: kevinsiraki/overview:dev  # This will push the image with a "dev" tag
+          tags: kevinsiraki/overview:dev
 
       - name: SSH and run dev deploy script on remote server
         env:
           SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          # Set up SSH
           mkdir -p ~/.ssh
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          # SSH into the server and run the dev deploy script with sudo
-          ssh -o StrictHostKeyChecking=no -p 47441 kevinsiraki@donttrip.org << EOF
+          ssh -o StrictHostKeyChecking=no -p ${{ SERVER_CONN }} << EOF
             export SERVER_PASSWORD="${SERVER_PASSWORD}"
-            echo "$SERVER_PASSWORD" | sudo -S /home/kevinsiraki/overview/deploy-dev.sh  # Run dev-specific deploy script
+            echo "$SERVER_PASSWORD" | sudo -S /home/kevinsiraki/overview/deploy-dev.sh
           EOF
 
+    # Send success message if all steps succeed
       - name: Send success message to Discord
+        if: success()
         env:
-          DISCORD_WEBHOOK_DEV: ${{ secrets.DISCORD_WEBHOOK_DEV }}  # Your webhook URL stored as a secret
+          DISCORD_WEBHOOK_DEV: ${{ secrets.DISCORD_WEBHOOK_DEV }}
         run: |
-          # Send a message to Discord indicating the success of the deployment
           curl -X POST $DISCORD_WEBHOOK_DEV \
             -H "Content-Type: application/json" \
-            -d '{"content": "Deployment to the dev environment was successful! 🚀"}'
+            -d '{"content": "✅ Deployment to the dev environment was successful! 🚀"}'
+
+    # Send failure message if any step fails
+      - name: Send failure message to Discord
+        if: failure()
+        env:
+          DISCORD_WEBHOOK_DEV: ${{ secrets.DISCORD_WEBHOOK_DEV }}
+        run: |
+          curl -X POST $DISCORD_WEBHOOK_DEV \
+            -H "Content-Type: application/json" \
+            -d '{"content": "❌ Deployment to the dev environment failed. Please check the logs! ⚠️"}'
