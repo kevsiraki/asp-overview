@@ -40,7 +40,7 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-          ssh -o StrictHostKeyChecking=no -p 47441 kevinsiraki@donttrip.org << EOF
+          ssh -o StrictHostKeyChecking=no -p ${{ SERVER_CONN }} << EOF
             echo "$SERVER_PASSWORD" | sudo -S /home/kevinsiraki/overview/deploy.sh
           EOF
 
