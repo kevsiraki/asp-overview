@@ -43,23 +43,3 @@ jobs:
             export SERVER_PASSWORD="${SERVER_PASSWORD}"
             echo "$SERVER_PASSWORD" | sudo -S /home/kevinsiraki/overview/deploy-dev.sh
           EOF
-
-    # Send success message if all steps succeed
-      - name: Send success message to Discord
-        if: success()
-        env:
-          DISCORD_WEBHOOK_DEV: ${{ secrets.DISCORD_WEBHOOK_DEV }}
-        run: |
-          curl -X POST $DISCORD_WEBHOOK_DEV \
-            -H "Content-Type: application/json" \
-            -d '{"content": "✅ Deployment to the dev environment was successful! 🚀"}'
-
-    # Send failure message if any step fails
-      - name: Send failure message to Discord
-        if: failure()
-        env:
-          DISCORD_WEBHOOK_DEV: ${{ secrets.DISCORD_WEBHOOK_DEV }}
-        run: |
-          curl -X POST $DISCORD_WEBHOOK_DEV \
-            -H "Content-Type: application/json" \
-            -d '{"content": "❌ Deployment to the dev environment failed. Please check the logs! ⚠️"}'
