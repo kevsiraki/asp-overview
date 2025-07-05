@@ -44,21 +44,3 @@ jobs:
           ssh -o StrictHostKeyChecking=no -p $SERVER_CONN << EOF
             echo "$SERVER_PASSWORD" | sudo -S /home/kevinsiraki/overview/deploy.sh
           EOF
-
-      - name: Send success message to Discord
-        if: success()
-        env:
-          DISCORD_WEBHOOK_PROD: ${{ secrets.DISCORD_WEBHOOK_PROD }}
-        run: |
-          curl -X POST $DISCORD_WEBHOOK_PROD \
-            -H "Content-Type: application/json" \
-            -d '{"content": "✅ Deployment to the production environment was successful! 🚀"}'
-
-      - name: Send failure message to Discord
-        if: failure()
-        env:
-          DISCORD_WEBHOOK_PROD: ${{ secrets.DISCORD_WEBHOOK_PROD }}
-        run: |
-          curl -X POST $DISCORD_WEBHOOK_PROD \
-            -H "Content-Type: application/json" \
-            -d '{"content": "❌ Deployment to the production environment failed. Please check the logs! ⚠️"}'
